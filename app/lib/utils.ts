@@ -33,25 +33,53 @@ export const getScoreTier = (score: number): ScoreTier =>
  * Parse the AI's feedback reply. Tolerates markdown code fences / surrounding prose
  * by extracting the outermost {...} block. Throws a descriptive Error if invalid.
  */
+
 export function parseFeedback(text: string): Feedback {
-  const start = text.indexOf("{");
-  const end = text.lastIndexOf("}");
-  if (start === -1 || end <= start)
-    throw new Error("AI response did not contain JSON");
-  let parsed: any;
+  // Remove common Markdown JSON code fences.
+  const cleaned = text
+    .trim()
+    .replace(/^```(?:json)?\s*/i, "")
+    .replace(/\s*```$/, "")
+    .trim();
+
+  let parsed: unknown;
+
   try {
-    parsed = JSON.parse(text.slice(start, end + 1));
+    parsed = JSON.parse(cleaned);
   } catch {
-    throw new Error("AI response was not valid JSON");
+    // Fallback: try extracting a JSON object from surrounding prose.
+    const start = cleaned.indexOf("{");
+    const end = cleaned.lastIndexOf("}");
+
+    if (start === -1 || end <= start) {
+      throw new Error(
+        "AI response did not contain a JSON object. Check the AI instructions.",
+      );
+    }
+
+    try {
+      parsed = JSON.parse(cleaned.slice(start, end + 1));
+    } catch {
+      throw new Error(
+        "AI returned malformed JSON. Check the raw response and AI instructions.",
+      );
+    }
   }
+
   if (
-    typeof parsed?.overallScore !== "number" ||
+    typeof parsed !== "object" ||
+    parsed === null ||
+    !("overallScore" in parsed) ||
+    typeof parsed.overallScore !== "number" ||
+    !("ATS" in parsed) ||
     !parsed.ATS ||
+    !("toneAndStyle" in parsed) ||
     !parsed.toneAndStyle
   ) {
     throw new Error(
-      "AI response was missing required fields",
+      "AI response is missing required fields: overallScore, ATS, or toneAndStyle.",
     );
   }
+
   return parsed as Feedback;
 }

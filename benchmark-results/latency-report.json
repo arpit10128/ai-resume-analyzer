@@ -1,0 +1,51 @@
+{
+  "totalRequests": 5,
+  "measuredRequests": 5,
+  "successfulAiRequests": 5,
+  "failedAiRequests": 0,
+  "p50Ms": 12567.200000047684,
+  "p95Ms": 18310.100000023842,
+  "averageMs": 13580.940000009537,
+  "results": [
+    {
+      "request": 1,
+      "resume": "01_aarav_mehta_software_engineer.pdf",
+      "durationMs": 12076,
+      "aiStatus": "success",
+      "workflowStatus": "success",
+      "error": ""
+    },
+    {
+      "request": 2,
+      "resume": "02_diya_nair_data_analyst.pdf",
+      "durationMs": 12567.200000047684,
+      "aiStatus": "success",
+      "workflowStatus": "success",
+      "error": ""
+    },
+    {
+      "request": 3,
+      "resume": "03_isha_kapoor_frontend_developer.pdf",
+      "durationMs": 12337.899999976158,
+      "aiStatus": "success",
+      "workflowStatus": "success",
+      "error": ""
+    },
+    {
+      "request": 4,
+      "resume": "04_kabir_singh_devops_engineer.pdf",
+      "durationMs": 12613.5,
+      "aiStatus": "success",
+      "workflowStatus": "success",
+      "error": ""
+    },
+    {
+      "request": 5,
+      "resume": "05_mira_joshi_business_analyst.pdf",
+      "durationMs": 18310.100000023842,
+      "aiStatus": "success",
+      "workflowStatus": "success",
+      "error": ""
+    }
+  ]
+}
